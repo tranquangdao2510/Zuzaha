@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="zuhahaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="tbl_Bill">
+    <Key>
+      <PropertyRef Name="bill_id" />
+    </Key>
+    <Property Name="bill_id" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="created_date" Type="datetime" />
+    <Property Name="total_money" Type="float" />
+    <Property Name="status_bill" Type="bit" />
+    <Property Name="employes_id" Type="nvarchar" MaxLength="20" />
+    <Property Name="customer_name" Type="nvarchar" MaxLength="200" />
+    <Property Name="customer_phone" Type="int" />
+  </EntityType>
+  <EntityType Name="tbl_BillDetail">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" Nullable="false" />
+    <Property Name="bill_id" Type="nvarchar" MaxLength="20" />
+    <Property Name="product_id" Type="nvarchar" MaxLength="20" />
+    <Property Name="quantity" Type="int" />
+    <Property Name="into_money" Type="float" />
+  </EntityType>
+  <EntityType Name="tbl_Category">
+    <Key>
+      <PropertyRef Name="cate_id" />
+    </Key>
+    <Property Name="cate_id" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="cate_name" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="cate_status" Type="bit" />
+  </EntityType>
+  <EntityType Name="tbl_Classifed">
+    <Key>
+      <PropertyRef Name="classifed_id" />
+    </Key>
+    <Property Name="classifed_id" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="classifed_name" Type="nvarchar" MaxLength="200" />
+    <Property Name="status_classifed" Type="bit" />
+  </EntityType>
+  <EntityType Name="tbl_Employees">
+    <Key>
+      <PropertyRef Name="employes_id" />
+    </Key>
+    <Property Name="employes_id" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="employes_name" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="employes_phone" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="email" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="employes_address" Type="text" />
+    <Property Name="gender" Type="bit" />
+    <Property Name="brithday" Type="datetime" />
+    <Property Name="classifed_id" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="status_Employes" Type="bit" />
+    <Property Name="password" Type="nvarchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="tbl_Product">
+    <Key>
+      <PropertyRef Name="product_id" />
+    </Key>
+    <Property Name="product_id" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="product_name" Type="nvarchar" MaxLength="200" />
+    <Property Name="product_desc" Type="text" />
+    <Property Name="product_import_price" Type="float" />
+    <Property Name="product_export_price" Type="float" />
+    <Property Name="product_status" Type="bit" />
+    <Property Name="product_quantity" Type="int" />
+    <Property Name="cate_id" Type="nvarchar" MaxLength="20" />
+  </EntityType>
+  <Association Name="FK__tbl_Bill__employ__1CF15040">
+    <End Role="tbl_Employees" Type="Self.tbl_Employees" Multiplicity="0..1" />
+    <End Role="tbl_Bill" Type="Self.tbl_Bill" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_Employees">
+        <PropertyRef Name="employes_id" />
+      </Principal>
+      <Dependent Role="tbl_Bill">
+        <PropertyRef Name="employes_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbl_BillD__bill___1FCDBCEB">
+    <End Role="tbl_Bill" Type="Self.tbl_Bill" Multiplicity="0..1" />
+    <End Role="tbl_BillDetail" Type="Self.tbl_BillDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_Bill">
+        <PropertyRef Name="bill_id" />
+      </Principal>
+      <Dependent Role="tbl_BillDetail">
+        <PropertyRef Name="bill_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbl_BillD__produ__20C1E124">
+    <End Role="tbl_Product" Type="Self.tbl_Product" Multiplicity="0..1" />
+    <End Role="tbl_BillDetail" Type="Self.tbl_BillDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_Product">
+        <PropertyRef Name="product_id" />
+      </Principal>
+      <Dependent Role="tbl_BillDetail">
+        <PropertyRef Name="product_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbl_Emplo__class__1A14E395">
+    <End Role="tbl_Classifed" Type="Self.tbl_Classifed" Multiplicity="1" />
+    <End Role="tbl_Employees" Type="Self.tbl_Employees" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_Classifed">
+        <PropertyRef Name="classifed_id" />
+      </Principal>
+      <Dependent Role="tbl_Employees">
+        <PropertyRef Name="classifed_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tbl_Produ__cate___1273C1CD">
+    <End Role="tbl_Category" Type="Self.tbl_Category" Multiplicity="0..1" />
+    <End Role="tbl_Product" Type="Self.tbl_Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_Category">
+        <PropertyRef Name="cate_id" />
+      </Principal>
+      <Dependent Role="tbl_Product">
+        <PropertyRef Name="cate_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="zuhahaModelStoreContainer">
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_Bill" EntityType="Self.tbl_Bill" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_BillDetail" EntityType="Self.tbl_BillDetail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_Category" EntityType="Self.tbl_Category" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_Classifed" EntityType="Self.tbl_Classifed" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_Employees" EntityType="Self.tbl_Employees" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_Product" EntityType="Self.tbl_Product" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__tbl_Bill__employ__1CF15040" Association="Self.FK__tbl_Bill__employ__1CF15040">
+      <End Role="tbl_Employees" EntitySet="tbl_Employees" />
+      <End Role="tbl_Bill" EntitySet="tbl_Bill" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbl_BillD__bill___1FCDBCEB" Association="Self.FK__tbl_BillD__bill___1FCDBCEB">
+      <End Role="tbl_Bill" EntitySet="tbl_Bill" />
+      <End Role="tbl_BillDetail" EntitySet="tbl_BillDetail" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbl_BillD__produ__20C1E124" Association="Self.FK__tbl_BillD__produ__20C1E124">
+      <End Role="tbl_Product" EntitySet="tbl_Product" />
+      <End Role="tbl_BillDetail" EntitySet="tbl_BillDetail" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbl_Emplo__class__1A14E395" Association="Self.FK__tbl_Emplo__class__1A14E395">
+      <End Role="tbl_Classifed" EntitySet="tbl_Classifed" />
+      <End Role="tbl_Employees" EntitySet="tbl_Employees" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tbl_Produ__cate___1273C1CD" Association="Self.FK__tbl_Produ__cate___1273C1CD">
+      <End Role="tbl_Category" EntitySet="tbl_Category" />
+      <End Role="tbl_Product" EntitySet="tbl_Product" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
